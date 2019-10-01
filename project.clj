@@ -4,7 +4,7 @@
   :license {:name "MIT"
             :url "https://opensource.org/licenses/MIT"}
   :min-lein-version "2.7.1"
-  :dependencies [[reagent "0.7.0"]]
+  :dependencies [[rum "0.11.3"]]
   :plugins [[lein-figwheel "0.5.14"]
             [lein-doo "0.1.8"]
             [lein-cljsbuild "1.1.7" :exclusions [[org.clojure/clojure]]]]
@@ -15,12 +15,12 @@
 
   :aliases {"testing" ["do" ["clean"] ["doo" "phantom" "test" "once"]]}
 
-  :profiles {:dev {:dependencies [[org.clojure/clojure "1.9.0-beta2"]
-                                  [org.clojure/clojurescript "1.9.946"]
+  :profiles {:dev {:dependencies [[org.clojure/clojure "1.10.0"]
+                                  [org.clojure/clojurescript "1.10.520"]
                                   [doo "0.1.8"]
                                   [com.cemerick/piggieback "0.2.2"]
                                   [figwheel-sidecar "0.5.14"]
-                                  [devcards "0.2.4" :exclusions [[cljsjs/react]]]]
+                                  [devcards "0.2.5"]]
                    :source-paths ["src" "devcards"]
                    :resource-paths ["devresources"]
                    :cljsbuild {:builds [{:id "dev"
@@ -37,11 +37,11 @@
                                                     :asset-path "js/out-cards"
                                                     :output-to "resources/public/js/cards.js"
                                                     :output-dir "resources/public/js/out-cards"}}
-                                        {:id "test"
-                                         :source-paths ["src" "test"]
-                                         :compiler {:output-to "resources/public/js/compiled/test.js"
-                                                    :main datafrisk.test-runner
-                                                    :optimizations :none}}
+                                        ; {:id "test"
+                                        ;  :source-paths ["src" "test"]
+                                        ;  :compiler {:output-to "resources/public/js/compiled/test.js"
+                                        ;             :main datafrisk.test-runner
+                                        ;             :optimizations :none}}
                                         {:id "demo-site"
                                          :source-paths ["src" "dev"]
                                          :compiler {:main "datafrisk.demo"
