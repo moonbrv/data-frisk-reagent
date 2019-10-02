@@ -23,13 +23,22 @@
                       :an-object                   (clj->js {:a "a"})
                       :this-is-a-very-long-keyword :g}))
 
+(defonce state-second (atom "this is the value"))
+
 (rum/defc App < rum/reactive [state]
-  (let [state (rum/react state)]
+  (let [state (rum/react state)
+  other-state (rum/react state-second)]
     [:div
      (Animals state)
+     [:input {:value other-state
+     :on-change #(->> %
+     .-target
+     .-value
+     (reset! state-second))}]
      (d/DataFriskShell
        ;; List of arguments you want to visualize
        state
+       other-state
        {:a :b :c :d :e :f})]))
 
 (defn mount-app-element []
