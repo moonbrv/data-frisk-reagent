@@ -50,7 +50,12 @@
 
 (def button-style {:padding          "1px 3px"
                    :cursor           "pointer"
+                   :fontSize         "12px"
                    :background-color "white"})
+
+(def input-style {:font    "inherit"
+                  :height  "inherit"
+                  :padding "0 7px"})
 
 (rum/defc ExpandAllButton [emit-fn data]
   [:button {:on-click #(emit-fn :expand-all data)
@@ -112,6 +117,7 @@
      (nil? data) (NilText)
      (string? data) (if swappable
                       [:input {:type          "text"
+                               :style         input-style
                                :default-value (str data)
                                :on-change     (fn string-changed [e]
                                                 (emit-fn :changed path (.. e -target -value)))}]
@@ -119,6 +125,7 @@
 
      (keyword? data) (if swappable
                        [:input {:type          "text"
+                                :style         input-style
                                 :default-value (name data)
                                 :on-change     (fn keyword-changed [e]
                                                  (emit-fn :changed path (keyword (.. e -target -value))))}]
@@ -128,6 +135,7 @@
 
      (number? data) (if swappable
                       [:input {:type          "number"
+                               :style         input-style
                                :default-value data
                                :on-change
                                               (fn number-changed [e]
@@ -171,8 +179,8 @@
                         :path      path-to-here
                         :emit-fn   emit-fn}))]
       [:div {:style {:flex "0 1 auto"}}
-       [:div {:style {:display     "flex"
-                      :flex-flow   "row"}}
+       [:div {:style {:display   "flex"
+                      :flex-flow "row"}}
         [:div {:style {:flex "0 1 auto"}}
          (Node {:data k})]
         [:div {:style {:flex "0 1 auto" :paddingLeft "4px"}}
