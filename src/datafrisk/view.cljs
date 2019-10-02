@@ -6,79 +6,79 @@
 (declare DataFrisk)
 
 (def styles
-  {:shell {:backgroundColor "#FAFAFA"
-           :fontFamily "Consolas,Monaco,Courier New,monospace"
-           :fontSize "12px"
-           :z-index 9999}
-   :strings {:color "#4Ebb4E"}
-   :keywords {:color "purple"}
-   :numbers {:color "blue"}
-   :nil {:color "red"}
+  {:shell                {:backgroundColor "#FAFAFA"
+                          :fontFamily      "Consolas,Monaco,Courier New,monospace"
+                          :fontSize        "12px"
+                          :z-index         9999}
+   :strings              {:color "#4Ebb4E"}
+   :keywords             {:color "purple"}
+   :numbers              {:color "blue"}
+   :nil                  {:color "red"}
    :shell-visible-button {:backgroundColor "#4EE24E"}})
 
 (rum/defc ErrorIcon []
   [:svg {:viewBox "0 0 30 42" :width "100%" :height "100%"}
-   [:path {:fill "darkorange"
-           :stroke "red"
+   [:path {:fill         "darkorange"
+           :stroke       "red"
            :stroke-width "2"
-           :d "M15 3
+           :d            "M15 3
            Q16.5 6.8 25 18
            A12.8 12.8 0 1 1 5 18
            Q13.5 6.8 15 3z"}]
    [:circle {:cx 15 :cy 32 :r 7 :fill "yellow"}]])
 
 (rum/defc ErrorText [text]
-  [:div {:style {:fontSize "0.7em"
-                 :display "flex"
+  [:div {:style {:fontSize    "0.7em"
+                 :display     "flex"
                  :align-items "center"
-                 :color "red"}} text])
+                 :color       "red"}} text])
 
 (rum/defc ExpandButton [{:keys [expanded? path emit-fn]}]
-  [:button {:style {:border 0
-                    :padding "5px 4px 5px 2px"
-                    :textAlign "center"
-                    :backgroundColor "transparent"
-                    :width "20px"
-                    :height "20px"
-                    :cursor "pointer"}
+  [:button {:style    {:border          0
+                       :padding         "5px 4px 5px 2px"
+                       :textAlign       "center"
+                       :backgroundColor "transparent"
+                       :width           "20px"
+                       :height          "20px"
+                       :cursor          "pointer"}
             :on-click #(emit-fn (if expanded? :contract :expand) path)}
    [:svg {:viewBox "0 0 100 100"
-          :width "100%" :height "100%"
-          :style {:transition "all 0.2s ease"
-                  :transform (when expanded? "rotate(90deg)")}}
+          :width   "100%" :height "100%"
+          :style   {:transition "all 0.2s ease"
+                    :transform  (when expanded? "rotate(90deg)")}}
     [:polygon {:points "0,0 0,100 100,50" :stroke "black"}]]])
 
-(def button-style {:padding "1px 3px"
-                   :cursor "pointer"
+(def button-style {:padding          "1px 3px"
+                   :cursor           "pointer"
                    :background-color "white"})
 
 (rum/defc ExpandAllButton [emit-fn data]
   [:button {:on-click #(emit-fn :expand-all data)
-            :style (merge button-style
-                          {:borderTopLeftRadius "2px"
-                           :borderBottomLeftRadius "2px"
-                           :border "1px solid darkgray"})}
+            :style    (merge button-style
+                             {:borderTopLeftRadius    "2px"
+                              :borderBottomLeftRadius "2px"
+                              :border                 "1px solid darkgray"})}
    "Expand"])
 
 (rum/defc CollapseAllButton [emit-fn data]
   [:button {:on-click #(emit-fn :collapse-all)
             :style
-            (merge button-style
-                   {:borderTop "1px solid darkgray"
-                    :borderBottom "1px solid darkgray"
-                    :borderRight "1px solid darkgray"
-                    :borderLeft "0"})}
+                      (merge button-style
+                             {:borderTop    "1px solid darkgray"
+                              :borderBottom "1px solid darkgray"
+                              :borderRight  "1px solid darkgray"
+                              :borderLeft   "0"})}
    "Collapse"])
 
 (rum/defc CopyButton [emit-fn data]
   [:button {:on-click #(emit-fn :copy data)
-            :style (merge button-style
-                          {:borderTopRightRadius "2px"
-                           :borderBottomRightRadius "2px"
-                           :borderTop "1px solid darkgray"
-                           :borderBottom "1px solid darkgray"
-                           :borderRight "1px solid darkgray"
-                           :borderLeft "0"})}
+            :style    (merge button-style
+                             {:borderTopRightRadius    "2px"
+                              :borderBottomRightRadius "2px"
+                              :borderTop               "1px solid darkgray"
+                              :borderBottom            "1px solid darkgray"
+                              :borderRight             "1px solid darkgray"
+                              :borderLeft              "0"})}
    "Copy"])
 
 (rum/defc NilText []
@@ -99,40 +99,40 @@
         (sort-by str)
         (map-indexed
           (fn [i data] [:span {:key (str i)}
-                                  (cond (nil? data) (NilText)
-                                        (string? data) (StringText data)
-                                        (keyword? data) (KeywordText data)
-                                        (number? data) (NumberText data)
-                                        :else (str data))]))
+                        (cond (nil? data) (NilText)
+                              (string? data) (StringText data)
+                              (keyword? data) (KeywordText data)
+                              (number? data) (NumberText data)
+                              :else (str data))]))
         (interpose " "))])
 
 (rum/defc Node [{:keys [data path emit-fn swappable metadata-paths]}]
-  [:div {:style {:display "flex"}} 
+  [:div {:style {:display "flex"}}
    (cond
      (nil? data) (NilText)
      (string? data) (if swappable
-       [:input {:type "text"
-                :default-value (str data)
-                :on-change (fn string-changed [e]
-                  (emit-fn :changed path (.. e -target -value)))}]
-       (StringText data))
+                      [:input {:type          "text"
+                               :default-value (str data)
+                               :on-change     (fn string-changed [e]
+                                                (emit-fn :changed path (.. e -target -value)))}]
+                      (StringText data))
 
      (keyword? data) (if swappable
-       [:input {:type "text"
-                :default-value (name data)
-                :on-change (fn keyword-changed [e]
-                  (emit-fn :changed path (keyword (.. e -target -value))))}]
-       (KeywordText data))
+                       [:input {:type          "text"
+                                :default-value (name data)
+                                :on-change     (fn keyword-changed [e]
+                                                 (emit-fn :changed path (keyword (.. e -target -value))))}]
+                       (KeywordText data))
 
      (object? data) (str data " " (.stringify js/JSON data))
 
      (number? data) (if swappable
-       [:input {:type "number"
-                :default-value data
-                :on-change
-                (fn number-changed [e]
-                  (emit-fn :changed path (js/Number (.. e -target -value))))}]
-       (NumberText data))
+                      [:input {:type          "number"
+                               :default-value data
+                               :on-change
+                                              (fn number-changed [e]
+                                                (emit-fn :changed path (js/Number (.. e -target -value))))}]
+                      (NumberText data))
      :else (str data))
    (when-let [errors (:error (get metadata-paths path))]
      (ErrorText (str "\u00A0 " errors)))])
@@ -140,10 +140,12 @@
 (defn expandable? [v]
   (or (map? v) (seq? v) (coll? v)))
 
-(rum/defc CollectionSummary [{:keys [data]}]
+(rum/defc CollectionSummary [{:keys [data]} expanded?]
   (cond (map? data) [:div {:style {:flex "0 1 auto"}}
                      [:span "{"]
-                     (KeySet (keys data))
+                     (if expanded?
+                       (str (count (keys data)) " keys")
+                       (KeySet (keys data)))
                      [:span "}"]]
         (set? data) [:div {:style {:flex "0 1 auto"}} [:span "#{"]
                      (str (count data) " items")
@@ -160,51 +162,52 @@
                               (not (empty? v)))
         metadata (get metadata-paths path-to-here)
         expanded? (:expanded? metadata)]
-    [:div {:style {:display "flex"
+    [:div {:style {:display   "flex"
                    :flex-flow "column"}}
-     [:div {:style {:display "flex"}}
+     [:div {:style {:display "flex" :align-items "center"}}
       [:div {:style {:flex "0 0 20px"}}
        (when expandable-node?
          (ExpandButton {:expanded? expanded?
-                        :path path-to-here
-                        :emit-fn emit-fn}))]
+                        :path      path-to-here
+                        :emit-fn   emit-fn}))]
       [:div {:style {:flex "0 1 auto"}}
-       [:div {:style {:display "flex"
-                      :flex-flow "row"}}
+       [:div {:style {:display     "flex"
+                      :flex-flow   "row"
+                      :align-items "center"}}
         [:div {:style {:flex "0 1 auto"}}
          (Node {:data k})]
         [:div {:style {:flex "0 1 auto" :paddingLeft "4px"}}
          (if (expandable? v)
-           (CollectionSummary {:data v})
-           (Node {:data v
-                  :swappable swappable
-                  :path path-to-here
+           (CollectionSummary {:data v} expanded?)
+           (Node {:data           v
+                  :swappable      swappable
+                  :path           path-to-here
                   :metadata-paths metadata-paths
-                  :emit-fn emit-fn}))]]]]
+                  :emit-fn        emit-fn}))]]]]
      (when expanded?
        [:div {:style {:flex "1"}}
-        (DataFrisk {:hide-header? true
-                    :data v
-                    :swappable swappable
-                    :path path-to-here
+        (DataFrisk {:hide-header?   true
+                    :data           v
+                    :swappable      swappable
+                    :path           path-to-here
                     :metadata-paths metadata-paths
-                    :emit-fn emit-fn})])]))
+                    :emit-fn        emit-fn})])]))
 
 (rum/defc ListVecNode [{:keys [data path metadata-paths emit-fn swappable hide-header?]}]
   (let [metadata (get metadata-paths path)
         expanded? (:expanded? metadata)]
-    [:div {:style {:display "flex"
+    [:div {:style {:display   "flex"
                    :flex-flow "column"}}
      (when-not hide-header?
-       [:div {:style {:display "flex"}}
+       [:div {:style {:display "flex" :align-items "center"}}
         (when (:error metadata)
           [:div {:style {:margin-left "-1em"
-                         :width "1em"
-                         :height "1.2em"}}
+                         :width       "1em"
+                         :height      "1.2em"}}
            (ErrorIcon)])
         (ExpandButton {:expanded? expanded?
-                       :path path
-                       :emit-fn emit-fn})
+                       :path      path
+                       :emit-fn   emit-fn})
         [:div {:style {:flex "0 1 auto"}}
          [:span (if (vector? data) "[" "(")]
          (str (count data) " items")
@@ -214,27 +217,27 @@
         (when (:error metadata)
           [:div {:style {:paddingBottom "4px"}}
            (ErrorText (:error metadata))])
-        (map-indexed (fn [i x] (rum/with-key (DataFrisk {:data x
-                                                         :swappable swappable
-                                                         :path (conj path i)
+        (map-indexed (fn [i x] (rum/with-key (DataFrisk {:data           x
+                                                         :swappable      swappable
+                                                         :path           (conj path i)
                                                          :metadata-paths metadata-paths
-                                                         :emit-fn emit-fn}) (str i))) data)])]))
+                                                         :emit-fn        emit-fn}) (str i))) data)])]))
 
 (rum/defc SetNode [{:keys [data path metadata-paths emit-fn swappable hide-header?]}]
   (let [metadata (get metadata-paths path)
         expanded? (:expanded? metadata)]
-    [:div {:style {:display "flex"
+    [:div {:style {:display   "flex"
                    :flex-flow "column"}}
      (when-not hide-header?
-       [:div {:style {:display "flex"}}
+       [:div {:style {:display "flex" :align-items "center"}}
         (when (:error metadata)
           [:div {:style {:margin-left "-1em"
-                         :width "1em"
-                         :height "1.2em"}}
+                         :width       "1em"
+                         :height      "1.2em"}}
            (ErrorIcon)])
         (ExpandButton {:expanded? expanded?
-                       :path path
-                       :emit-fn emit-fn})
+                       :path      path
+                       :emit-fn   emit-fn})
         [:div {:style {:flex "0 1 auto"}}
          [:span "#{"]
          (str (count data) " items")
@@ -244,27 +247,27 @@
         (when (:error metadata)
           [:div {:style {:paddingBottom "4px"}}
            (ErrorText (:error metadata))])
-        (map-indexed (fn [i x] (rum/with-key (DataFrisk {:data x
-                                                         :swappable swappable
-                                                         :path (conj path i)
+        (map-indexed (fn [i x] (rum/with-key (DataFrisk {:data           x
+                                                         :swappable      swappable
+                                                         :path           (conj path i)
                                                          :metadata-paths metadata-paths
-                                                         :emit-fn emit-fn}) (str i))) data)])]))
+                                                         :emit-fn        emit-fn}) (str i))) data)])]))
 
 (rum/defc MapNode [{:keys [data path metadata-paths emit-fn hide-header?] :as all}]
   (let [metadata (get metadata-paths path)
         expanded? (:expanded? metadata)]
-    [:div {:style {:display "flex"
+    [:div {:style {:display   "flex"
                    :flex-flow "column"}}
      (when-not hide-header?
-       [:div {:style {:display "flex"}}
+       [:div {:style {:display "flex" :align-items "center"}}
         (when (:error metadata)
           [:div {:style {:margin-left "-1em"
-                         :width "1em"
-                         :height "1.2em"}}
+                         :width       "1em"
+                         :height      "1.2em"}}
            (ErrorIcon)])
         (ExpandButton {:expanded? expanded?
-                       :path path
-                       :emit-fn emit-fn})
+                       :path      path
+                       :emit-fn   emit-fn})
         [:div {:style {:flex "0 1 auto"}}
          [:span (str "{")]
          (KeySet (keys data))
@@ -307,7 +310,7 @@
               (recur
                 (concat rest (map-indexed (fn [i node] {:path (conj (:path current) i)
                                                         :node node})
-                               current-node))
+                                          current-node))
                 (assoc-in expanded-paths [(:path current) :expanded?] true))
 
               :else
@@ -371,51 +374,51 @@
       (CollapseAllButton emit-fn)
       (CopyButton emit-fn data)]
      [:div {:style {:flex "0 1 auto"}}
-      (DataFrisk {:data data
-                  :swappable swappable
-                  :path []
+      (DataFrisk {:data           data
+                  :swappable      swappable
+                  :path           []
                   :metadata-paths metadata-paths
-                  :emit-fn emit-fn})]]))
+                  :emit-fn        emit-fn})]]))
 
 (rum/defc VisibilityButton
   [visible? update-fn]
-  [:button {:style {:border 0
-                    :backgroundColor "transparent" :width "20px" :height "20px"}
+  [:button {:style    {:border          0
+                       :backgroundColor "transparent" :width "20px" :height "20px"}
             :on-click update-fn}
    [:svg {:viewBox "0 0 100 100"
-          :width "100%" :height "100%"
-          :style {:transition "all 0.2s ease"
-                  :transform (when visible? "rotate(90deg)")}}
+          :width   "100%" :height "100%"
+          :style   {:transition "all 0.2s ease"
+                    :transform  (when visible? "rotate(90deg)")}}
     [:polygon {:points "0,0 0,100 100,50" :stroke "black"}]]])
 
 (rum/defcs DataFriskView < (rum/local {} ::state-atom)
-  {:will-mount (fn [state]
-                 (let [data (-> state :rum/args)
-                       expand-by-default (reduce #(assoc-in %1 [:data-frisk %2 :metadata-paths [] :expanded?] true) {} (range (count data)))]
-                   (reset! (::state-atom state) expand-by-default))
-                 state)}
+                           {:will-mount (fn [state]
+                                          (let [data (-> state :rum/args)
+                                                expand-by-default (reduce #(assoc-in %1 [:data-frisk %2 :metadata-paths [] :expanded?] true) {} (range (count data)))]
+                                            (reset! (::state-atom state) expand-by-default))
+                                          state)}
   [state & data]
   (let [expand-by-default (reduce #(assoc-in %1 [:data-frisk %2 :metadata-paths [] :expanded?] true) {} (range (count data)))
         state-atom (::state-atom state)]
     (let [data-frisk (:data-frisk @state-atom)
           visible? (:visible? data-frisk)]
-      [:div {:style (merge {:flex-flow "row nowrap"
+      [:div {:style (merge {:flex-flow  "row nowrap"
                             :transition "all 0.3s ease-out"
-                            :z-index "5"}
+                            :z-index    "5"}
                            (when-not visible?
                              {:overflow-x "hide"
                               :overflow-y "hide"
                               :max-height "30px"
-                              :max-width "100px"})
+                              :max-width  "100px"})
                            (:shell styles))}
        (VisibilityButton visible? (fn [_] (swap! state-atom assoc-in [:data-frisk :visible?] (not visible?))))
        [:span "Data frisk"]
        (when visible?
-         [:div {:style {:padding "10px"
-                          ;; TODO Make the max height and width adjustable
-                          ;:max-height "400px"
-                          ;:max-width "800px"
-                        :resize "both"
+         [:div {:style {:padding    "10px"
+                        ;; TODO Make the max height and width adjustable
+                        ;:max-height "400px"
+                        ;:max-width "800px"
+                        :resize     "both"
                         :box-sizing "border-box"
                         :overflow-x "auto"
                         :overflow-y "auto"}}
