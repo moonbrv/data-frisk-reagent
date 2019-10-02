@@ -11,7 +11,7 @@
                           :fontSize        "12px"
                           :z-index         9999}
    :strings              {:color "#4Ebb4E"}
-   :keywords             {:color "purple"}
+   :keywords             {:color "purple" :white-space "nowrap"}
    :numbers              {:color "blue"}
    :nil                  {:color "red"}
    :shell-visible-button {:backgroundColor "#4EE24E"}})
@@ -164,7 +164,7 @@
         expanded? (:expanded? metadata)]
     [:div {:style {:display   "flex"
                    :flex-flow "column"}}
-     [:div {:style {:display "flex" :align-items "center"}}
+     [:div {:style {:display "flex"}}
       [:div {:style {:flex "0 0 20px"}}
        (when expandable-node?
          (ExpandButton {:expanded? expanded?
@@ -172,8 +172,7 @@
                         :emit-fn   emit-fn}))]
       [:div {:style {:flex "0 1 auto"}}
        [:div {:style {:display     "flex"
-                      :flex-flow   "row"
-                      :align-items "center"}}
+                      :flex-flow   "row"}}
         [:div {:style {:flex "0 1 auto"}}
          (Node {:data k})]
         [:div {:style {:flex "0 1 auto" :paddingLeft "4px"}}
@@ -199,7 +198,7 @@
     [:div {:style {:display   "flex"
                    :flex-flow "column"}}
      (when-not hide-header?
-       [:div {:style {:display "flex" :align-items "center"}}
+       [:div {:style {:display "flex"}}
         (when (:error metadata)
           [:div {:style {:margin-left "-1em"
                          :width       "1em"
@@ -229,7 +228,7 @@
     [:div {:style {:display   "flex"
                    :flex-flow "column"}}
      (when-not hide-header?
-       [:div {:style {:display "flex" :align-items "center"}}
+       [:div {:style {:display "flex"}}
         (when (:error metadata)
           [:div {:style {:margin-left "-1em"
                          :width       "1em"
@@ -259,7 +258,7 @@
     [:div {:style {:display   "flex"
                    :flex-flow "column"}}
      (when-not hide-header?
-       [:div {:style {:display "flex" :align-items "center"}}
+       [:div {:style {:display "flex"}}
         (when (:error metadata)
           [:div {:style {:margin-left "-1em"
                          :width       "1em"
@@ -399,29 +398,28 @@
                                           state)}
   [state & data]
   (let [expand-by-default (reduce #(assoc-in %1 [:data-frisk %2 :metadata-paths [] :expanded?] true) {} (range (count data)))
-        state-atom (::state-atom state)]
-    (let [data-frisk (:data-frisk @state-atom)
-          visible? (:visible? data-frisk)]
-      [:div {:style (merge {:flex-flow  "row nowrap"
-                            :transition "all 0.3s ease-out"
-                            :z-index    "5"}
-                           (when-not visible?
-                             {:overflow-x "hide"
-                              :overflow-y "hide"
-                              :max-height "30px"
-                              :max-width  "100px"})
-                           (:shell styles))}
-       (VisibilityButton visible? (fn [_] (swap! state-atom assoc-in [:data-frisk :visible?] (not visible?))))
-       [:span "Data frisk"]
-       (when visible?
-         [:div {:style {:padding    "10px"
-                        ;; TODO Make the max height and width adjustable
-                        ;:max-height "400px"
-                        ;:max-width "800px"
-                        :resize     "both"
-                        :box-sizing "border-box"
-                        :overflow-x "auto"
-                        :overflow-y "auto"}}
-          (map-indexed (fn [id x]
-                         (rum/with-key (Root x id state-atom) (str id))) data)])])
+        state-atom (::state-atom state)
+        visible? (get-in [:data-frisk :visible?] @state-atom)]
+    [:div {:style (merge {:flex-flow  "row nowrap"
+                          :transition "all 0.3s ease-out"
+                          :z-index    "5"}
+                         (when-not visible?
+                           {:overflow-x "hide"
+                            :overflow-y "hide"
+                            :max-height "30px"
+                            :max-width  "100px"})
+                         (:shell styles))}
+     (VisibilityButton visible? (fn [_] (swap! state-atom assoc-in [:data-frisk :visible?] (not visible?))))
+     [:span "Data frisk"]
+     (when visible?
+       [:div {:style {:padding    "10px"
+                      ;; TODO Make the max height and width adjustable
+                      ;:max-height "400px"
+                      ;:max-width "800px"
+                      :resize     "both"
+                      :box-sizing "border-box"
+                      :overflow-x "auto"
+                      :overflow-y "auto"}}
+        (map-indexed (fn [id x]
+                       (rum/with-key (Root x id state-atom) (str id))) data)])]
     ))
