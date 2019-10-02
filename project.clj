@@ -1,6 +1,6 @@
-(defproject data-frisk-reagent "0.4.5"
+(defproject data-frisk-rum "0.0.1"
   :description "Frisking EDN since 2016!"
-  :url "http://github.com/odinodin/data-frisk-reagent"
+  :url "https://github.com/moonbrv/data-frisk-rum"
   :license {:name "MIT"
             :url "https://opensource.org/licenses/MIT"}
   :min-lein-version "2.7.1"
