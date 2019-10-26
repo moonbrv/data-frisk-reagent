@@ -8,9 +8,6 @@ Suitable for use during development.
 
 <img src="datafrisk-shell.gif" style="max-width: 400px;">
 
-[Live demo](http://odinodin.no/x/datafrisk)
- 
-
 ## Install
 
 ![](https://clojars.org/data-frisk-rum/latest-version.svg)
