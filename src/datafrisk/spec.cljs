@@ -12,11 +12,13 @@
    :state (atom {:data-frisk {id {:metadata-paths (-> (into {} (map spec-problem->metadata-path (:cljs.spec.alpha/problems errors)))
                                                       (update [] assoc :expanded? true))}}})})
 
-(rum/defc SpecView [{:keys [errors]}]
+(rum/defc SpecView < rum/static
+  [{:keys [errors]}]
   (let [mangled (frisk-errors "spec-errors" errors)]
     (Root (:data mangled) "spec-errors" (:state mangled))))
 
-(rum/defc SpecTitleView [{:keys [errors title] :as args}]
+(rum/defc SpecTitleView < rum/static
+  [{:keys [errors title] :as args}]
   [:div {:style {:background-color "white"
                  :padding          "10px"}}
    (if title

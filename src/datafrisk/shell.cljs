@@ -11,7 +11,8 @@
                           :z-index         9999}
    :shell-visible-button {:backgroundColor "#4EE24E"}})
 
-(rum/defc DataFriskShellVisibleButton [visible? toggle-visible-fn]
+(rum/defc DataFriskShellVisibleButton < rum/static
+  [visible? toggle-visible-fn]
   [:button {:on-click toggle-visible-fn
             :style    (merge {:border     0
                               :cursor     "pointer"

@@ -16,7 +16,7 @@
    :nil                  {:color "red"}
    :shell-visible-button {:backgroundColor "#4EE24E"}})
 
-(rum/defc ErrorIcon []
+(rum/defc ErrorIcon < rum/static []
   [:svg {:viewBox "0 0 30 42" :width "100%" :height "100%"}
    [:path {:fill         "darkorange"
            :stroke       "red"
@@ -27,13 +27,13 @@
            Q13.5 6.8 15 3z"}]
    [:circle {:cx 15 :cy 32 :r 7 :fill "yellow"}]])
 
-(rum/defc ErrorText [text]
+(rum/defc ErrorText < rum/static [text]
   [:div {:style {:fontSize    "0.7em"
                  :display     "flex"
                  :align-items "center"
                  :color       "red"}} text])
 
-(rum/defc ExpandButton [{:keys [expanded? path emit-fn]}]
+(rum/defc ExpandButton < rum/static [{:keys [expanded? path emit-fn]}]
   [:button {:style    {:border          0
                        :padding         "5px 4px 5px 2px"
                        :textAlign       "center"
@@ -57,7 +57,7 @@
                   :height  "inherit"
                   :padding "0 7px"})
 
-(rum/defc ExpandAllButton [emit-fn data]
+(rum/defc ExpandAllButton < rum/static [emit-fn data]
   [:button {:on-click #(emit-fn :expand-all data)
             :style    (merge button-style
                              {:borderTopLeftRadius    "2px"
@@ -65,7 +65,7 @@
                               :border                 "1px solid darkgray"})}
    "Expand"])
 
-(rum/defc CollapseAllButton [emit-fn]
+(rum/defc CollapseAllButton < rum/static [emit-fn]
   [:button {:on-click #(emit-fn :collapse-all)
             :style
                       (merge button-style
@@ -75,7 +75,7 @@
                               :borderLeft   "0"})}
    "Collapse"])
 
-(rum/defc CopyButton [emit-fn data]
+(rum/defc CopyButton < rum/static [emit-fn data]
   [:button {:on-click #(emit-fn :copy data)
             :style    (merge button-style
                              {:borderTopRightRadius    "2px"
@@ -89,16 +89,16 @@
 (rum/defc NilText []
   [:span {:style (:nil styles)} (pr-str nil)])
 
-(rum/defc StringText [data]
+(rum/defc StringText < rum/static [data]
   [:span {:style (:strings styles)} (pr-str data)])
 
-(rum/defc KeywordText [data]
+(rum/defc KeywordText < rum/static [data]
   [:span {:style (:keywords styles)} (str data)])
 
-(rum/defc NumberText [data]
+(rum/defc NumberText < rum/static [data]
   [:span {:style (:numbers styles)} data])
 
-(rum/defc KeySet [keyset]
+(rum/defc KeySet < rum/static [keyset]
   [:span
    (->> keyset
         (sort-by str)
@@ -148,7 +148,7 @@
 (defn expandable? [v]
   (or (map? v) (seq? v) (coll? v)))
 
-(rum/defc CollectionSummary [{:keys [data]} expanded?]
+(rum/defc CollectionSummary < rum/static [{:keys [data]} expanded?]
   (cond (map? data) [:div {:style {:flex "0 1 auto"}}
                      [:span "{"]
                      (if expanded?
@@ -260,7 +260,7 @@
                                                          :metadata-paths metadata-paths
                                                          :emit-fn        emit-fn}) (str i))) data)])]))
 
-(rum/defc MapNode [{:keys [data path metadata-paths emit-fn hide-header?] :as all}]
+(rum/defc MapNode < rum/static [{:keys [data path metadata-paths emit-fn hide-header?] :as all}]
   (let [metadata (get metadata-paths path)
         expanded? (:expanded? metadata)]
     [:div {:style {:display   "flex"
@@ -387,7 +387,7 @@
                   :metadata-paths metadata-paths
                   :emit-fn        emit-fn})]]))
 
-(rum/defc VisibilityButton
+(rum/defc VisibilityButton < rum/static
   [visible? update-fn]
   [:button {:style    {:border          0
                        :backgroundColor "transparent" :width "20px" :height "20px"}
