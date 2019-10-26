@@ -11,5 +11,3 @@
 ;; Deprecated
 (defn FriskInline [& data]
   (apply view/DataFriskView data))
-
-

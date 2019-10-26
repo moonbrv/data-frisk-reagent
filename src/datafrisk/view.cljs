@@ -429,5 +429,4 @@
                       :overflow-x "auto"
                       :overflow-y "auto"}}
         (map-indexed (fn [id x]
-                       (rum/with-key (Root x id state-atom) (str id))) data)])]
-    ))
+                       (rum/with-key (Root x id state-atom) (str id))) data)])]))

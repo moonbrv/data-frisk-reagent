@@ -37,22 +37,22 @@
                       :key-with-long-name-21 "info string"
                       "this is a string key" (clj->js {:a "a" :b 2 :c 4 "e" "e"})})
 
-(defonce state (atom {:animals                     '({:animal "Monkey", :age 22222}
-                                                     {:animal "Giraffe", :age 45}
-                                                     {:animal "Zebra" :age 3}
-                                                     {:animal "Monkey" :age 2}
-                                                     {:animal "Dog" :age 3})
-                      :some-string                 "a"
-                      :vector-with-map             [1 2 3 3 {:a "a" :b "b"}]
-                      :a-set                       #{1 2 3}
-                      :a-map                       big-content-map
-                      "string key"                 big-content-map
-                      :atom                        (atom {:x "x" :y "y" :z [1 2 3 4]})
-                      :a-seq                       (seq [1 2])
-                      :an-object                   (clj->js {:a "a"})
-                      :this-is-a-very-long-keyword :g}))
+(def state (atom {:animals                     '({:animal "Monkey", :age 22222}
+                                                 {:animal "Giraffe", :age 45}
+                                                 {:animal "Zebra" :age 3}
+                                                 {:animal "Monkey" :age 2}
+                                                 {:animal "Dog" :age 3})
+                  :some-string                 "a"
+                  :vector-with-map             [1 2 3 3 {:a "a" :b "b"}]
+                  :a-set                       #{1 2 3}
+                  :a-map                       big-content-map
+                  "string key"                 big-content-map
+                  :atom                        (atom {:x "x" :y "y" :z [1 2 3 4]})
+                  :a-seq                       (seq [1 2])
+                  :an-object                   (clj->js {:a "a"})
+                  :this-is-a-very-long-keyword :g}))
 
-(defonce state-second (atom "this is the value"))
+(def state-second (atom "this is the value"))
 
 (rum/defc App < rum/reactive [state]
   (let [state (rum/react state)

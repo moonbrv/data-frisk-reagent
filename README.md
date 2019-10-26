@@ -1,8 +1,8 @@
-# data-frisk-reagent
+# data-frisk-rum
 
 > "Get your facts first, then you can distort them as you please" - Mark Twain
 
-Visualize your data in your Reagent apps as a tree structure.
+Visualize your data in your Rum apps as a tree structure.
 
 Suitable for use during development.
 
@@ -13,13 +13,13 @@ Suitable for use during development.
 
 ## Install
 
-![](https://clojars.org/data-frisk-reagent/latest-version.svg)
+![](https://clojars.org/data-frisk-rum/latest-version.svg)
 
-Add `data-frisk-reagent` to the dev `:dependencies` in your `project.clj`
+Add `data-frisk-rum` to the dev `:dependencies` in your `project.clj`
 
 ## Usage
 
-This library's public API consists of two reagent components: `datafrisk.core/DataFriskShell` and `datafrisk.core/DataFriskView`.
+This library's public API consists of two rum components: `datafrisk.core/DataFriskShell` and `datafrisk.core/DataFriskView`.
 
 
 ### DataFriskShell
@@ -31,22 +31,22 @@ Example:
 
 ```clojure
 (ns datafrisk.demo
-  (:require [reagent.core :as r]
+  (:require [rum.core :as rum]
             [datafrisk.core :as d]))
 
 (defn mount-root []
-  (r/render
-    [d/DataFriskShell
-     ;; List of arguments you want to visualize
-     {:data {:some-string "a"
-             :vector-with-map [1 2 3 3 {:a "a" :b "b"}]
-             :a-set #{1 2 3}
-             :a-map {:x "x" :y "y" :z [1 2 3 4]}
-             :a-list '(1 2 3)
-             :a-seq (seq [1 2])
-             :an-object (clj->js {:a "a"})
-             :this-is-a-very-long-keyword :g}}
-     {:a :b :c :d}]
+  (rum/mount
+    (d/DataFriskShell
+          ;; List of arguments you want to visualize
+          {:data {:some-string "a"
+                  :vector-with-map [1 2 3 3 {:a "a" :b "b"}]
+                  :a-set #{1 2 3}
+                  :a-map {:x "x" :y "y" :z [1 2 3 4]}
+                  :a-list '(1 2 3)
+                  :a-seq (seq [1 2])
+                  :an-object (clj->js {:a "a"})
+                  :this-is-a-very-long-keyword :g}}
+          {:a :b :c :d})
     (js/document.getElementById "app")))
 ```
 
@@ -57,23 +57,23 @@ This component lets you dig in to any data structure. Here's an example of its u
 
 ```clojure
 (ns datafrisk.demo
-  (:require [reagent.core :as r]
+  (:require [rum :as rum]
             [datafrisk.core :as d]))
 
 (def app-state {:animals [{:species "Giraffe" :age 10} 
                           {:species "Rhino" :age 4} 
                           {:species "Monkey" :age 4}]})
 
-(defn AnimalSalute [animal]
+(rum/defc AnimalSalute [animal]
   [:div 
     (str "Hi " (:species animal) "!")
-    [d/DataFriskView animal]])
+    (d/DataFriskView animal)])
 
 (defn mount-root []
-  (r/render
+  (rum/mount
     [:div
      (for [animal (:animals app-state)]
-       [AnimalSalute animal])]
+       (AnimalSalute animal))]
     (js/document.getElementById "app")))
 ```
 
@@ -92,10 +92,10 @@ This component shows spec error messages in a human friendly way.
 (s/def :app/persons (s/coll-of :person/person))
 
 ;; Render
-[SpecView
-  {:errors (s/explain-data :person/person {:likes 2
-                                           :person/name 1
-                                           :person/age "Jane"})}]
+(SpecView
+   {:errors (s/explain-data :person/person {:likes 2
+                                            :person/name 1
+                                            :person/age "Jane"})})
 ```
 
 <img src="specview.png" style="max-width: 400px;">
@@ -105,10 +105,10 @@ This component shows spec error messages in a human friendly way.
 This is a convenience component that adds a title above the SpecView.
 
 ```clojure
-[SpecTitleView
- {:errors (s/explain-data :person/person {:likes 2
-                                          :person/name 1
-                                          :person/age "Jane"})}]
+(SpecTitleView
+  {:errors (s/explain-data :person/person {:likes 2
+                                           :person/name 1
+                                           :person/age "Jane"})})
 ```
 
 <img src="spectitleview.png" style="max-width: 400px;">
@@ -116,12 +116,12 @@ This is a convenience component that adds a title above the SpecView.
 You can also override the title. 
 
 ```clojure
-[SpecTitleView
- {:title {:style {:font-weight "700" :color "red"}
-              :text "What ever you want"}
-  :errors (s/explain-data :person/person {:likes 2
-                                          :person/name 1
-                                          :person/age "Jane"})}]
+(SpecTitleView
+  {:title {:style {:font-weight "700" :color "red"}
+               :text "What ever you want"}
+   :errors (s/explain-data :person/person {:likes 2
+                                           :person/name 1
+                                           :person/age "Jane"})})
 
 ```
 
@@ -150,21 +150,18 @@ thrown when spec instrumentation finds an error.
       
 ;;;; In your render code
 
-(defn my-exception-view-comp [state]
-  [SpecTitleView (:current-error state)]) 
+(rum/defc My-exception-view-comp [state]
+  (SpecTitleView (:current-error state))) 
  
 ```
-
-### Re-frame
-
-See the [re-frisk](https://github.com/flexsurfer/re-frisk) project.
 
 ### For more
 
 See the dev/demo.cljs namespace for example use. There are also devcards that you can look at.
 
-## License
-
-Copyright © 2017 Odin Standal
-
-Distributed under the MIT License (MIT)
+## Development
+To run tests you should install several node packages
+```shell
+npm install
+npm install -g karma-cli
+```

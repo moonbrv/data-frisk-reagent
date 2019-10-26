@@ -68,4 +68,3 @@
   [state & data]
   (let [shell-state (::shell-state state)]
     (apply DataFriskShellView shell-state data)))
-
