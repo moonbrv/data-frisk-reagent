@@ -65,7 +65,7 @@
                               :border                 "1px solid darkgray"})}
    "Expand"])
 
-(rum/defc CollapseAllButton [emit-fn data]
+(rum/defc CollapseAllButton [emit-fn]
   [:button {:on-click #(emit-fn :collapse-all)
             :style
                       (merge button-style
@@ -405,9 +405,8 @@
                                             (reset! (::state-atom state) expand-by-default))
                                           state)}
   [state & data]
-  (let [expand-by-default (reduce #(assoc-in %1 [:data-frisk %2 :metadata-paths [] :expanded?] true) {} (range (count data)))
-        state-atom (::state-atom state)
-        visible? (get-in [:data-frisk :visible?] @state-atom)]
+  (let [state-atom (::state-atom state)
+        visible? (get-in @state-atom [:data-frisk :visible?])]
     [:div {:style (merge {:flex-flow  "row nowrap"
                           :transition "all 0.3s ease-out"
                           :z-index    "5"}

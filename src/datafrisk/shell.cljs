@@ -26,7 +26,8 @@
                              (when-not visible? {:bottom 0}))}
    (if visible? "Hide" "Data frisk")])
 
-(rum/defcs DataFriskShellView < rum/reactive (rum/local 12 ::font-size) [state shell-state & data]
+(rum/defcs DataFriskShellView < rum/reactive (rum/local 12 ::font-size)
+  [state shell-state & data]
   (let [visible? (:shell-visible? (rum/react shell-state))
         font-size (::font-size state)]
     [:div {:style (merge {:position   "fixed"
@@ -66,5 +67,4 @@
                                              (reset! (::shell-state state) expand-by-default))
                                            state)}
   [state & data]
-  (let [shell-state (::shell-state state)]
-    (apply DataFriskShellView shell-state data)))
+  (apply DataFriskShellView (::shell-state state) data))

@@ -68,7 +68,9 @@
        ;; List of arguments you want to visualize
        state
        other-state
-       {:a :b :c :d :e :f})]))
+       {:a :b :c :d :e :f})
+     [:p "DataFriskView component:"]
+     (d/DataFriskView {:a :b :c :d :e :f})]))
 
 (defn mount-app-element []
   (when-let [el (js/document.getElementById "app")]

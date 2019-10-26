@@ -7,7 +7,3 @@
 
 (defn DataFriskView [& data]
   (apply view/DataFriskView data))
-
-;; Deprecated
-(defn FriskInline [& data]
-  (apply view/DataFriskView data))
