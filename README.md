@@ -159,9 +159,22 @@ thrown when spec instrumentation finds an error.
 
 See the dev/demo.cljs namespace for example use. There are also devcards that you can look at.
 
+To see devcards use next figwheel commands:
+```bash
+lein figwheel
+
+# after figwheel starts:
+(start-autobuild cards)
+```
+
 ## Development
-To run tests you should install several node packages
-```shell
+To run tests you should install several node packages:
+```bash
 npm install
 npm install -g karma-cli
 ```
+Then you may run tests with:
+```bahs
+lein testing
+```
+
