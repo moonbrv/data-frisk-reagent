@@ -14,7 +14,17 @@
    :keywords             {:color "purple" :white-space "nowrap"}
    :numbers              {:color "blue"}
    :nil                  {:color "red"}
-   :shell-visible-button {:backgroundColor "#4EE24E"}})
+   :shell-visible-button {:backgroundColor "#4EE24E"}
+   :arrow-button {:border          0
+                  :textAlign       "center"
+                  :backgroundColor "transparent"
+                  :width           "10px"
+                  :min-width       "10px"
+                  :height          "10px"
+                  :min-heigth      "10px"
+                  :box-sizing      "content-box"
+                  :padding         "0"
+                  :cursor          "pointer"}})
 
 (rum/defc ErrorIcon < rum/static []
   [:svg {:viewBox "0 0 30 42" :width "100%" :height "100%"}
@@ -34,13 +44,7 @@
                  :color       "red"}} text])
 
 (rum/defc ExpandButton < rum/static [{:keys [expanded? path emit-fn]}]
-  [:button {:style    {:border          0
-                       :padding         "5px 4px 5px 2px"
-                       :textAlign       "center"
-                       :backgroundColor "transparent"
-                       :width           "20px"
-                       :height          "20px"
-                       :cursor          "pointer"}
+  [:button {:style    (:arrow-button styles)
             :on-click #(emit-fn (if expanded? :contract :expand) path)}
    [:svg {:viewBox "0 0 100 100"
           :width   "100%" :height "100%"
@@ -173,7 +177,7 @@
     [:div {:style {:display   "flex"
                    :flex-flow "column"}}
      [:div {:style {:display "flex"}}
-      [:div {:style {:flex "0 0 20px"}}
+      [:div {:style {:flex "0 0 10px"}}
        (when expandable-node?
          (ExpandButton {:expanded? expanded?
                         :path      path-to-here
@@ -389,8 +393,7 @@
 
 (rum/defc VisibilityButton < rum/static
   [visible? update-fn]
-  [:button {:style    {:border          0
-                       :backgroundColor "transparent" :width "20px" :height "20px"}
+  [:button {:style    (:arrow-button styles)
             :on-click update-fn}
    [:svg {:viewBox "0 0 100 100"
           :width   "100%" :height "100%"
