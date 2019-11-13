@@ -5,8 +5,8 @@
 (def default-font-size 12)
 
 (def styles
-  {:shell                {:backgroundColor "#FAFAFA"
-                          :fontFamily      "Consolas,Monaco,Courier New,monospace"
+  {:shell                {:backgroundColor "#f5f5f5"
+                          :fontFamily      "Consolas,Monaco,Menlo,Courier New,monospace"
                           :fontSize        (str default-font-size "px")
                           :z-index         9999}
    :shell-visible-button {:backgroundColor "#4EE24E"}})
@@ -18,10 +18,10 @@
                               :cursor     "pointer"
                               :font       "inherit"
                               :fontSize   (str default-font-size "px")
-                              :padding    "8px 12px"
+                              :padding    "3px 5px"
                               :position   "fixed"
                               :right      0
-                              :width      "80px"
+                              :width      "90px"
                               :text-align "center"}
                              (:shell-visible-button styles)
                              (when-not visible? {:bottom 0}))}
