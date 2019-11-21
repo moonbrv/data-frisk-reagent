@@ -1,4 +1,4 @@
-(defproject data-frisk-rum "0.0.5-SNAPSHOT"
+(defproject data-frisk-rum "0.0.5"
   :description "Frisking EDN since 2016!"
   :url "https://github.com/moonbrv/data-frisk-rum"
   :license {:name "MIT"
