@@ -2,7 +2,7 @@
   :description "Frisking EDN since 2016!"
   :url "https://github.com/moonbrv/data-frisk-rum"
   :license {:name "MIT"
-            :url "https://opensource.org/licenses/MIT"}
+            :url  "https://opensource.org/licenses/MIT"}
   :min-lein-version "2.7.1"
   :dependencies [[rum "0.11.3"]]
   :plugins [[lein-figwheel "0.5.14"]
@@ -12,12 +12,14 @@
   :source-paths ["src"]
 
   :figwheel {:http-server-root "public"
-             :server-port 3999}
+             :server-port      3999}
 
-  :aliases {"testing" ["do" ["clean"] ["doo" "chrome-headless" "test" "once"]]}
+  :aliases {"testing"   ["do" ["clean"] ["doo" "chrome-headless" "test" "once"]]
+            "clj-kondo" ["run" "-m" "clj-kondo.main" "--lint" "src" "--config" ".clj-kondo/config.edn" "--cache"]}
 
   :profiles {:dev {:dependencies   [[org.clojure/clojure "1.10.1"]
                                     [org.clojure/clojurescript "1.10.520"]
+                                    [clj-kondo "2019.11.07"]
                                     [doo "0.1.11"]
                                     [com.cemerick/piggieback "0.2.2"]
                                     [figwheel-sidecar "0.5.14"]
