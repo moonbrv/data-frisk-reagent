@@ -1,4 +1,4 @@
-(defproject data-frisk-rum "0.0.5"
+(defproject data-frisk-rum "0.0.6-SNAPSHOT"
   :description "Explore data in FE Rum application, implementation of data-frisk-reagent for Rum"
   :url "https://github.com/moonbrv/data-frisk-rum"
   :license {:name "MIT"
@@ -49,4 +49,5 @@
                                                              :optimizations :advanced
                                                              :output-to     "demo-site/main.js"
                                                              :output-dir    "demo-site/out"}}]}}}
-  :clean-targets ^{:protect false} ["resources/public/js" "target"])
+  :clean-targets ^{:protect false} ["resources/public/js" "target"]
+  :deploy-repositories {"releases" {:url "https://repo.clojars.org" :creds :gpg}})
