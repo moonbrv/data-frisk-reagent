@@ -1,4 +1,4 @@
-(defproject data-frisk-rum "0.0.6-SNAPSHOT"
+(defproject data-frisk-rum "0.0.6"
   :description "Explore data in FE Rum application, implementation of data-frisk-reagent for Rum"
   :url "https://github.com/moonbrv/data-frisk-rum"
   :license {:name "MIT"
