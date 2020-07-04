@@ -1,11 +1,11 @@
 (defproject data-frisk-rum "0.0.5"
-  :description "Frisking EDN since 2016!"
+  :description "Explore data in FE Rum application, implementation of data-frisk-reagent for Rum"
   :url "https://github.com/moonbrv/data-frisk-rum"
   :license {:name "MIT"
             :url "https://opensource.org/licenses/MIT"}
   :min-lein-version "2.7.1"
-  :dependencies [[rum "0.11.3"]]
-  :plugins [[lein-figwheel "0.5.14"]
+  :dependencies [[rum "0.12.2"]]
+  :plugins [[lein-figwheel "0.5.20"]
             [lein-doo "0.1.11"]
             [lein-ancient "0.6.15"]
             [lein-cljsbuild "1.1.7" :exclusions [[org.clojure/clojure]]]]
@@ -20,8 +20,8 @@
                                     [org.clojure/clojurescript "1.10.520"]
                                     [doo "0.1.11"]
                                     [com.cemerick/piggieback "0.2.2"]
-                                    [figwheel-sidecar "0.5.14"]
-                                    [devcards "0.2.5" :exclusions [[cljsjs/react]]]]
+                                    [figwheel-sidecar "0.5.20"]
+                                    [devcards "0.2.7" :exclusions [[cljsjs/react]]]]
                    :source-paths   ["src" "devcards"]
                    :resource-paths ["devresources"]
                    :cljsbuild      {:builds [{:id           "dev"
