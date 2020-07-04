@@ -10,7 +10,7 @@
                           :fontFamily      "Consolas,Monaco,Courier New,monospace"
                           :fontSize        "12px"
                           :z-index         9999}
-   :strings              {:color "#4Ebb4E"}
+   :strings              {:color "#4Ebb4E" :white-space "nowrap"}
    :keywords             {:color "purple" :white-space "nowrap"}
    :numbers              {:color "blue"}
    :nil                  {:color "red"}
@@ -72,11 +72,11 @@
 (rum/defc CollapseAllButton < rum/static [emit-fn]
   [:button {:on-click #(emit-fn :collapse-all)
             :style
-                      (merge button-style
-                             {:borderTop    "1px solid darkgray"
-                              :borderBottom "1px solid darkgray"
-                              :borderRight  "1px solid darkgray"
-                              :borderLeft   "0"})}
+            (merge button-style
+                   {:borderTop    "1px solid darkgray"
+                    :borderBottom "1px solid darkgray"
+                    :borderRight  "1px solid darkgray"
+                    :borderLeft   "0"})}
    "Collapse"])
 
 (rum/defc CopyButton < rum/static [emit-fn data]
@@ -107,12 +107,12 @@
    (->> keyset
         (sort-by str)
         (map-indexed
-          (fn [i data] [:span {:key (str i)}
-                        (cond (nil? data) (NilText)
-                              (string? data) (StringText data)
-                              (keyword? data) (KeywordText data)
-                              (number? data) (NumberText data)
-                              :else (str data))]))
+         (fn [i data] [:span {:key (str i)}
+                       (cond (nil? data) (NilText)
+                             (string? data) (StringText data)
+                             (keyword? data) (KeywordText data)
+                             (number? data) (NumberText data)
+                             :else (str data))]))
         (interpose " "))])
 
 (rum/defc Node [{:keys [data path emit-fn swappable metadata-paths]}]
@@ -142,8 +142,8 @@
                                :style         input-style
                                :default-value data
                                :on-change
-                                              (fn number-changed [e]
-                                                (emit-fn :changed path (js/Number (.. e -target -value))))}]
+                               (fn number-changed [e]
+                                 (emit-fn :changed path (js/Number (.. e -target -value))))}]
                       (NumberText data))
      :else (str data))
    (when-let [errors (:error (get metadata-paths path))]
@@ -310,26 +310,26 @@
             current-node (if (satisfies? IDeref (:node current)) @(:node current) (:node current))]
         (cond (map? current-node)
               (recur
-                (concat rest (map (fn [[k v]] {:path (conj (:path current) k)
-                                               :node v})
-                                  current-node))
-                (assoc-in expanded-paths [(:path current) :expanded?] true))
+               (concat rest (map (fn [[k v]] {:path (conj (:path current) k)
+                                              :node v})
+                                 current-node))
+               (assoc-in expanded-paths [(:path current) :expanded?] true))
 
               (or (seq? current-node)
                   (vector? current-node)
                   (set? current-node))
               (recur
-                (concat rest (map-indexed (fn [i node] {:path (conj (:path current) i)
-                                                        :node node})
-                                          current-node))
-                (assoc-in expanded-paths [(:path current) :expanded?] true))
+               (concat rest (map-indexed (fn [i node] {:path (conj (:path current) i)
+                                                       :node node})
+                                         current-node))
+               (assoc-in expanded-paths [(:path current) :expanded?] true))
 
               :else
               (recur
-                rest
-                (if (coll? current-node)
-                  (assoc-in expanded-paths [(:path current) :expanded?] true)
-                  expanded-paths))))
+               rest
+               (if (coll? current-node)
+                 (assoc-in expanded-paths [(:path current) :expanded?] true)
+                 expanded-paths))))
       expanded-paths)))
 
 (defn copy-to-clipboard [data]
@@ -402,11 +402,11 @@
     [:polygon {:points "0,0 0,100 100,50" :stroke "black"}]]])
 
 (rum/defcs DataFriskView < (rum/local {} ::state-atom)
-                           {:will-mount (fn [state]
-                                          (let [data (-> state :rum/args)
-                                                expand-by-default (reduce #(assoc-in %1 [:data-frisk %2 :metadata-paths [] :expanded?] true) {} (range (count data)))]
-                                            (reset! (::state-atom state) expand-by-default))
-                                          state)}
+  {:will-mount (fn [state]
+                 (let [data (-> state :rum/args)
+                       expand-by-default (reduce #(assoc-in %1 [:data-frisk %2 :metadata-paths [] :expanded?] true) {} (range (count data)))]
+                   (reset! (::state-atom state) expand-by-default))
+                 state)}
   [state & data]
   (let [state-atom (::state-atom state)
         visible? (get-in @state-atom [:data-frisk :visible?])]
